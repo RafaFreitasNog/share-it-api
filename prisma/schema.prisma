@@ -10,8 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model Desk {
   id        String   @id @default(uuid())
   name      String
@@ -24,6 +22,7 @@ model Desk {
 
 model Order {
   id             String   @id @default(uuid())
+  name           String
   price          Float
   pricePerClient Float
   createdAt      DateTime @default(now())
