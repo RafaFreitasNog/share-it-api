@@ -5,8 +5,8 @@ const router = express.Router()
 //GET routes
 //get all
 router.get('/', async (req, res) => {
-  const desks = await prisma.order.findMany({})
-  res.status(200).json(desks)
+  const orders = await prisma.order.findMany({})
+  res.status(200).json(orders)
 })
 
 //get one
@@ -22,6 +22,28 @@ router.get('/:id', async (req, res) => {
       res.status(400).json({message: 'Record to get does not exist'})
     } else {
       res.status(200).json(order)
+    }
+  } catch (error) {
+    res.status(500).json(error)
+  }
+})
+
+//get by Desk
+router.get('/bydesk/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const orders = await prisma.order.findMany({
+      where:{
+        deskId: id
+      },
+      include: {
+        consumers: true
+      }
+    })
+    if (!orders) {
+      res.status(400).json({message: 'Record to get does not exist'})
+    } else {
+      res.status(200).json(orders)
     }
   } catch (error) {
     res.status(500).json(error)

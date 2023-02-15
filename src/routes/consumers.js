@@ -22,7 +22,15 @@ router.get('/bydesk/:id', async (req, res) => {
         deskId: id
       },
       include: {
-        orders: true
+        orders: {
+          include: {
+            _count: {
+              select: {
+                consumers: true
+              }
+            }
+          }
+        }
       }
     })
     if (!consumer) {
